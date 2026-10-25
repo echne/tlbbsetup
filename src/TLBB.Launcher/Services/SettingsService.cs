@@ -47,13 +47,13 @@ public sealed class SettingsService : ISettingsService
 
             if (savedVersion < CurrentSettingsVersion)
             {
-                // Older versions defaulted this option to off, so migrate once to the new opt-out default.
+                // Older versions defaulted this option to off. Migrate in memory during startup, but
+                // defer writing until the next settings save so a read-only settings file cannot close the app.
                 settings = settings with
                 {
                     SettingsVersion = CurrentSettingsVersion,
                     CreateDefenderExclusion = true
                 };
-                await SaveAsync(settings, cancellationToken);
             }
 
             return settings;
