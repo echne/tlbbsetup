@@ -1,0 +1,19 @@
+# .NET build outputs
+**/bin/
+**/obj/
+**/publish/
+**/TestResults/
+
+# Visual Studio / IDE
+**/.vs/
+*.suo
+*.user
+
+# Generated packages and release artifacts
+/artifacts/
+
+# Temporary and OS files
+*.tmp
+*.log
+Thumbs.db
+.DS_Store
