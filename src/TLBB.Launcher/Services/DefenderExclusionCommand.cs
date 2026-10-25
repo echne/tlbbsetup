@@ -63,8 +63,12 @@ internal static class DefenderExclusionCommand
         input["Force"] = true;
 
         using var output = defenderClass.InvokeMethod("Add", input, null);
-        if (output is null || Convert.ToUInt32(output["ReturnValue"]) != 0) return 72;
+        var returnValue = output?["ReturnValue"];
+        if (returnValue is null) return 72;
 
+        // WMI can accept the exclusion while its immediate readback returns a differently normalized path.
+        // The Add method's success code is authoritative; use readback only to confirm nonzero responses.
+        if (Convert.ToUInt32(returnValue) == 0) return 0;
         return ReadExclusionPaths(defenderClass).Any(path => PathsEqual(path, folderPath)) ? 0 : 72;
     }
 

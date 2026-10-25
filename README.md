@@ -9,7 +9,7 @@
 - Giải nén archive split ZIP vào vùng staging, kiểm tra đường dẫn an toàn và hoàn tất cài đặt theo transaction có khả năng rollback.
 - Tạo shortcut Desktop trỏ đến Launch.exe nếu người dùng chọn.
 - Hiển thị tiến trình tổng theo các giai đoạn tải, xác minh, giải nén, hoàn thiện và dọn dẹp. Chỉ báo 100% sau khi cài đặt và dọn dữ liệu tạm thành công.
-- Có thể thêm đúng thư mục game vào loại trừ Microsoft Defender sau khi người dùng chọn tùy chọn và xác nhận UAC. Tùy chọn bị vô hiệu hóa khi Defender không hoạt động, phát hiện antivirus khác hoặc không đọc được trạng thái bảo mật.
+- Mặc định bật tùy chọn thêm đúng thư mục game vào loại trừ Microsoft Defender. Tùy chọn bị tắt và khóa khi phát hiện antivirus khác, Defender không hoạt động hoặc không đọc được trạng thái bảo mật; người dùng vẫn có thể chủ động bỏ chọn khi Defender sẵn sàng.
 - Khi cài thành công, nút Bắt đầu chơi chạy Launch.exe và đóng launcher setup.
 
 ## Yêu cầu phát triển

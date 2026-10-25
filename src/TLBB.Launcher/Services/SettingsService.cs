@@ -5,6 +5,7 @@ namespace TLBB.Launcher.Services;
 
 public sealed class SettingsService : ISettingsService
 {
+    private const int CurrentSettingsVersion = 1;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
     private readonly string _settingsPath;
     private readonly string _statePath;
@@ -30,7 +31,32 @@ public sealed class SettingsService : ISettingsService
 
         try
         {
-            return await ReadAsync<LauncherSettings>(_settingsPath, cancellationToken) ?? new LauncherSettings();
+            await using var stream = new FileStream(_settingsPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous | FileOptions.SequentialScan);
+            using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
+            if (document.RootElement.ValueKind != JsonValueKind.Object)
+            {
+                return new LauncherSettings { InstallPath = @"C:\Games\TLBBPhongVanKiem" };
+            }
+
+            var settings = document.RootElement.Deserialize<LauncherSettings>(JsonOptions) ?? new LauncherSettings();
+            var versionProperty = document.RootElement.EnumerateObject()
+                .FirstOrDefault(property => string.Equals(property.Name, nameof(LauncherSettings.SettingsVersion), StringComparison.OrdinalIgnoreCase));
+            var savedVersion = versionProperty.Value.ValueKind == JsonValueKind.Number && versionProperty.Value.TryGetInt32(out var version)
+                ? version
+                : 0;
+
+            if (savedVersion < CurrentSettingsVersion)
+            {
+                // Older versions defaulted this option to off, so migrate once to the new opt-out default.
+                settings = settings with
+                {
+                    SettingsVersion = CurrentSettingsVersion,
+                    CreateDefenderExclusion = true
+                };
+                await SaveAsync(settings, cancellationToken);
+            }
+
+            return settings;
         }
         catch (JsonException)
         {
@@ -39,7 +65,7 @@ public sealed class SettingsService : ISettingsService
     }
 
     public Task SaveAsync(LauncherSettings settings, CancellationToken cancellationToken = default) =>
-        WriteAtomicAsync(_settingsPath, settings, cancellationToken);
+        WriteAtomicAsync(_settingsPath, settings with { SettingsVersion = CurrentSettingsVersion }, cancellationToken);
 
     public async Task<InstallationState?> LoadInstallationStateAsync(CancellationToken cancellationToken = default)
     {

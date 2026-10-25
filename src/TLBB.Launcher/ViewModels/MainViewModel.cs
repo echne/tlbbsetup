@@ -25,7 +25,8 @@ public sealed class MainViewModel : ObservableObject
     private InstallationState? _savedState;
     private string _installPath = @"C:\Games\TLBBPhongVanKiem";
     private bool _createShortcut = true;
-    private bool _createDefenderExclusion;
+    private bool _createDefenderExclusion = true;
+    private bool _defenderExclusionPreference = true;
     private bool _isApplyingDefenderExclusion;
     private bool _isBusy;
     private bool _isPaused;
@@ -112,6 +113,7 @@ public sealed class MainViewModel : ObservableObject
         {
             if (value && !CanAddDefenderExclusion) return;
             if (!SetProperty(ref _createDefenderExclusion, value)) return;
+            _defenderExclusionPreference = value;
             SaveSettingsInBackground();
             OnPropertyChanged(nameof(ShowAntivirusHint));
         }
@@ -283,6 +285,7 @@ public sealed class MainViewModel : ObservableObject
         var settings = await _settingsService.LoadAsync();
         _installPath = settings.InstallPath;
         _createShortcut = settings.CreateDesktopShortcut;
+        _defenderExclusionPreference = settings.CreateDefenderExclusion;
         _createDefenderExclusion = settings.CreateDefenderExclusion;
         OnPropertyChanged(nameof(InstallPath));
         OnPropertyChanged(nameof(CreateShortcut));
@@ -487,7 +490,7 @@ public sealed class MainViewModel : ObservableObject
             {
                 InstallPath = installDirectory,
                 CreateDesktopShortcut = createDesktopShortcut,
-                CreateDefenderExclusion = addDefenderExclusion
+                CreateDefenderExclusion = _defenderExclusionPreference
             });
 
             IReadOnlyList<string> partPaths;
@@ -654,7 +657,6 @@ public sealed class MainViewModel : ObservableObject
         {
             _createDefenderExclusion = false;
             OnPropertyChanged(nameof(CreateDefenderExclusion));
-            SaveSettingsInBackground();
         }
     }
 
@@ -709,7 +711,7 @@ public sealed class MainViewModel : ObservableObject
     {
         InstallPath = InstallPath,
         CreateDesktopShortcut = CreateShortcut,
-        CreateDefenderExclusion = CreateDefenderExclusion
+        CreateDefenderExclusion = _defenderExclusionPreference
     });
 
     private Task PersistStateAsync(string status, IReadOnlyList<string>? verifiedParts = null)
