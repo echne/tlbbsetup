@@ -1,0 +1,322 @@
+<Window x:Class="TLBB.Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TLBB Phong Vân Kiếm — Trình cài đặt"
+        Width="520" Height="440" MinWidth="520" MinHeight="440"
+        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" Background="Transparent" Foreground="#FFF8ED" FontFamily="Segoe UI"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="#493827" />
+            <Setter Property="Background" Value="#E8D8BE" />
+            <Setter Property="BorderBrush" Value="#A38963" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="13,10" />
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.86" /></Trigger>
+                            <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value="0.42" /></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#AA7139" />
+            <Setter Property="BorderBrush" Value="#E4B56F" />
+            <Setter Property="Foreground" Value="#FFF9EF" />
+            <Setter Property="Padding" Value="21,12" />
+        </Style>
+        <Style x:Key="WindowControlButton" TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Foreground" Value="#E8D7BE" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chrome" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#594633" /></Trigger>
+                            <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#735334" /></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CloseWindowButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chrome" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#B43A32" /><Setter Property="Foreground" Value="White" /></Trigger>
+                            <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#8E2823" /><Setter Property="Foreground" Value="White" /></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="#3B2B1B" />
+            <Setter Property="Background" Value="#F8F0E2" />
+            <Setter Property="BorderBrush" Value="#95784F" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,9" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#3B2D20" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="CheckBoxChrome" Width="24" Height="24" CornerRadius="4"
+                                    Background="#F8F0E2" BorderBrush="#987A50" BorderThickness="1">
+                                <TextBlock x:Name="CheckMark" Text="✓" FontSize="18" FontWeight="Bold"
+                                           Foreground="#FFF6E8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Visibility="Collapsed" />
+                            </Border>
+                            <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckBoxChrome" Property="Background" Value="#B77B3E" />
+                                <Setter TargetName="CheckBoxChrome" Property="BorderBrush" Value="#F1C782" />
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CheckBoxChrome" Property="BorderBrush" Value="#F1C782" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="CheckBoxChrome" Property="Opacity" Value="0.55" />
+                                <Setter Property="Foreground" Value="#897B67" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="StepCircle" TargetType="Border">
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="BorderBrush" Value="#B69B73" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="#F6ECD9" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+        <Style x:Key="Step1Circle" TargetType="Border" BasedOn="{StaticResource StepCircle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsStep1Active}" Value="True"><Setter Property="Background" Value="#B77B3E" /><Setter Property="BorderBrush" Value="#EDC07C" /></DataTrigger>
+                <DataTrigger Binding="{Binding IsStep1Done}" Value="True"><Setter Property="Background" Value="#42614C" /><Setter Property="BorderBrush" Value="#82A58B" /></DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Step2Circle" TargetType="Border" BasedOn="{StaticResource StepCircle}">
+            <Style.Triggers><DataTrigger Binding="{Binding IsStep2Active}" Value="True"><Setter Property="Background" Value="#B77B3E" /><Setter Property="BorderBrush" Value="#EDC07C" /></DataTrigger><DataTrigger Binding="{Binding IsStep2Done}" Value="True"><Setter Property="Background" Value="#42614C" /><Setter Property="BorderBrush" Value="#82A58B" /></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="Step3Circle" TargetType="Border" BasedOn="{StaticResource StepCircle}">
+            <Style.Triggers><DataTrigger Binding="{Binding IsStep3Active}" Value="True"><Setter Property="Background" Value="#B77B3E" /><Setter Property="BorderBrush" Value="#EDC07C" /></DataTrigger><DataTrigger Binding="{Binding IsStep3Done}" Value="True"><Setter Property="Background" Value="#42614C" /><Setter Property="BorderBrush" Value="#82A58B" /></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="Step4Circle" TargetType="Border" BasedOn="{StaticResource StepCircle}">
+            <Style.Triggers><DataTrigger Binding="{Binding IsStep4Active}" Value="True"><Setter Property="Background" Value="#B77B3E" /><Setter Property="BorderBrush" Value="#EDC07C" /></DataTrigger><DataTrigger Binding="{Binding IsStep4Done}" Value="True"><Setter Property="Background" Value="#42614C" /><Setter Property="BorderBrush" Value="#82A58B" /></DataTrigger></Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
+      <Border x:Name="WindowFrame" Width="780" Height="660" Background="#D5C29E" BorderBrush="#8E7049" BorderThickness="1"
+              CornerRadius="12" ClipToBounds="True" SizeChanged="WindowFrame_SizeChanged">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="34" />
+                <RowDefinition Height="160" />
+                <RowDefinition Height="52" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="72" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#493725" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <TextBlock Text="TLBB PHONG VÂN KIẾM  ·  TRÌNH CÀI ĐẶT" Margin="16,0,0,0" VerticalAlignment="Center"
+                           FontSize="15" FontWeight="SemiBold" Foreground="#F0DEC1" IsHitTestVisible="False" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource WindowControlButton}" Content="−" ToolTip="Thu nhỏ"
+                            AutomationProperties.Name="Thu nhỏ cửa sổ" Click="Minimize_Click" />
+                    <Button Style="{StaticResource CloseWindowButton}" Content="×" ToolTip="Đóng"
+                            AutomationProperties.Name="Đóng cửa sổ" Click="Close_Click" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" ClipToBounds="True">
+                <Image Source="pack://application:,,,/Assets/hero-background.jpg" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#981F1710" Offset="0" />
+                            <GradientStop Color="#581F1710" Offset="0.58" />
+                            <GradientStop Color="#381F1710" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle VerticalAlignment="Bottom" Height="38">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00191715" Offset="0" />
+                            <GradientStop Color="#FFD5C29E" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Image Source="pack://application:,,,/TLBB.PhongVanKiem.Launcher;component/Assets/server-logo-cropped.png" Width="280" Height="110" Margin="18,4,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" />
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,17,21,0">
+                    <TextBlock Text="TRÌNH CÀI ĐẶT · WINDOWS" FontSize="14" Foreground="#F0D5AA" HorizontalAlignment="Right" />
+                    <TextBlock Text="Phong Vân Kiếm" FontSize="20" FontFamily="Georgia" Foreground="#FFF0D5" Margin="0,7,0,0" HorizontalAlignment="Right" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2" Background="#E7D6B8" Margin="0,0,0,1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="9,0">
+                    <Border Style="{StaticResource Step1Circle}">
+                        <TextBlock Text="1" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1D5" />
+                    </Border>
+                    <TextBlock Text="Thiết lập" VerticalAlignment="Center" FontSize="17" Foreground="#71471F" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="9,0">
+                    <Border Style="{StaticResource Step2Circle}"><TextBlock Text="2" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1D5" /></Border>
+                    <TextBlock Text="Tải xuống" VerticalAlignment="Center" FontSize="17" Foreground="#84613A" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="9,0">
+                    <Border Style="{StaticResource Step3Circle}"><TextBlock Text="3" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1D5" /></Border>
+                    <TextBlock Text="Cài đặt" VerticalAlignment="Center" FontSize="17" Foreground="#84613A" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="9,0">
+                    <Border Style="{StaticResource Step4Circle}"><TextBlock Text="4" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1D5" /></Border>
+                    <TextBlock Text="Hoàn tất" VerticalAlignment="Center" FontSize="17" Foreground="#84613A" />
+                </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="3" Margin="30,22,30,18">
+                <Grid Visibility="{Binding IsSetupVisible, Converter={StaticResource BoolToVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Chào mừng đại hiệp" FontFamily="Georgia" FontSize="32" Foreground="#70471F" />
+                    <TextBlock Grid.Row="1" Text="Thiết lập nơi cài đặt TLBB Phong Vân Kiếm để bắt đầu hành trình giang hồ."
+                               FontSize="17" Foreground="#51412E" Margin="0,7,0,12" TextWrapping="Wrap" />
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Text="Thư mục cài đặt" FontSize="17" Foreground="#493827" Margin="0,0,0,7" />
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding InstallPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+                            <Button Grid.Column="1" Content="Chọn thư mục" Margin="8,0,0,0" Click="Browse_Click" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Margin="0,12,0,0">
+                        <CheckBox Content="Tạo biểu tượng game trên Desktop" IsChecked="{Binding CreateShortcut}" />
+                        <CheckBox Content="Tự động thêm vào loại trừ của Windows Defender"
+                                  IsChecked="{Binding CreateDefenderExclusion}" IsEnabled="{Binding CanAddDefenderExclusion}" />
+                        <TextBlock Text="{Binding AntivirusHint}"
+                                   Visibility="{Binding ShowAntivirusHint, Converter={StaticResource BoolToVisibility}}"
+                                   FontSize="18" Foreground="#80541D" Margin="0,2,0,4" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Visibility="{Binding IsDownloadVisible, Converter={StaticResource BoolToVisibility}}" VerticalAlignment="Center">
+                    <TextBlock Text="Đang tải xuống" FontFamily="Georgia" FontSize="32" Foreground="#70471F" />
+                    <TextBlock Text="Tải và xác minh từng volume từ máy chủ HTTPS." FontSize="17" Foreground="#51412E" Margin="0,7,0,13" />
+                    <Border Background="#E9DCC4" BorderBrush="#AF9163" BorderThickness="1" CornerRadius="6" Padding="16">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <TextBlock Text="{Binding CurrentFile}" FontSize="17" Foreground="#3B3022" />
+                                <TextBlock Text="{Binding ProgressPercentText}" FontSize="24" Foreground="#87591D" HorizontalAlignment="Right" />
+                            </Grid>
+                            <ProgressBar Value="{Binding OverallProgress.Percentage}" Maximum="100" Height="10" Background="#D3C1A0" Foreground="#B77832" BorderBrush="#9C7A4D" />
+                            <Grid Margin="0,11,0,0">
+                                <TextBlock Text="{Binding DownloadDetails}" FontSize="16" Foreground="#625340" />
+                                <TextBlock Text="{Binding SpeedText}" FontSize="16" Foreground="#625340" HorizontalAlignment="Right" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="Tiến trình tổng không đặt lại khi chuyển bước. Volume chỉ hoàn tất sau khi dung lượng và SHA-256 hợp lệ."
+                               FontSize="15" Foreground="#75634B" Margin="0,13,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Visibility="{Binding IsInstallVisible, Converter={StaticResource BoolToVisibility}}" VerticalAlignment="Center">
+                    <TextBlock Text="Đang cài đặt" FontFamily="Georgia" FontSize="32" Foreground="#70471F" />
+                    <TextBlock Text="Kiểm tra gói, giải nén an toàn và hoàn thiện file game." FontSize="17" Foreground="#51412E" Margin="0,7,0,13" />
+                    <Border Background="#E9DCC4" BorderBrush="#AF9163" BorderThickness="1" CornerRadius="6" Padding="16">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <TextBlock Text="{Binding OverallProgress.Message}" FontSize="17" Foreground="#3B3022" />
+                                <TextBlock Text="{Binding ProgressPercentText}" FontSize="24" Foreground="#87591D" HorizontalAlignment="Right" />
+                            </Grid>
+                            <ProgressBar Value="{Binding OverallProgress.Percentage}" Maximum="100" Height="10" Background="#D3C1A0" Foreground="#B77832" BorderBrush="#9C7A4D" />
+                            <Grid Margin="0,11,0,0">
+                                <TextBlock Text="{Binding CurrentFile}" FontSize="16" Foreground="#625340" />
+                                <TextBlock Text="Đang xử lý" FontSize="16" Foreground="#625340" HorizontalAlignment="Right" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="Launcher giữ bản game cũ trong lúc commit và chỉ đánh dấu hoàn tất sau cleanup thành công."
+                               FontSize="15" Foreground="#75634B" Margin="0,13,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Visibility="{Binding IsCompleteVisible, Converter={StaticResource BoolToVisibility}}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="540">
+                    <TextBlock Text="{Binding CompletionHeading}" FontFamily="Georgia" FontSize="34" Foreground="#70471F" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding CompletionDescription}"
+                               FontSize="18" Foreground="#5E4B33" Margin="0,12,0,4" TextAlignment="Center" TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="4" Background="#C7B18E" BorderBrush="#8F7657" BorderThickness="0,1,0,0" Padding="22,13">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Phong Vân Kiếm · Trình cài đặt Windows" FontSize="15" Foreground="#51402A" />
+                        <TextBlock Text="{Binding StatusMessage}" FontSize="14" Foreground="#6A5A43" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Tạm dừng" Command="{Binding PauseCommand}"
+                                Visibility="{Binding ShowPauseButton, Converter={StaticResource BoolToVisibility}}" Margin="0,0,8,0" />
+                        <Button Content="Tiếp tục" Command="{Binding ResumeCommand}"
+                                Visibility="{Binding ShowResumeButton, Converter={StaticResource BoolToVisibility}}" Margin="0,0,8,0" />
+                        <Button Content="Hủy" Click="Cancel_Click"
+                                Visibility="{Binding ShowCancelButton, Converter={StaticResource BoolToVisibility}}" Margin="0,0,8,0" />
+                        <Button Content="Đăng ký tài khoản" Command="{Binding RegisterCommand}"
+                                Visibility="{Binding ShowRegistrationButton, Converter={StaticResource BoolToVisibility}}" Margin="0,0,8,0" />
+                        <Button Content="Bắt đầu chơi" Command="{Binding PlayCommand}" Style="{StaticResource PrimaryButton}"
+                                Visibility="{Binding ShowPlayButton, Converter={StaticResource BoolToVisibility}}" />
+                        <Button Content="{Binding PrimaryButtonText}" Command="{Binding StartCommand}" Style="{StaticResource PrimaryButton}"
+                                IsEnabled="{Binding CanStart}" Visibility="{Binding ShowPrimaryButton, Converter={StaticResource BoolToVisibility}}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+      </Border>
+    </Viewbox>
+</Window>

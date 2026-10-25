@@ -1,0 +1,13 @@
+{
+  "manifestVersion": 1,
+  "game": "TLBB Phong Vân Kiếm",
+  "clientVersion": "",
+  "entryExecutable": "",
+  "registerUrl": null,
+  "archive": {
+    "format": "split-zip",
+    "entryPart": "",
+    "expandedSizeBytes": 0,
+    "parts": []
+  }
+}

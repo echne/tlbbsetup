@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TLBB Phong Vân Kiếm Launcher Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifestVersion", "game", "clientVersion", "entryExecutable", "archive"],
+  "properties": {
+    "manifestVersion": { "const": 1 },
+    "game": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "clientVersion": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$" },
+    "entryExecutable": { "type": "string", "minLength": 1, "maxLength": 260 },
+    "registerUrl": { "type": ["string", "null"], "format": "uri" },
+    "archive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "entryPart", "expandedSizeBytes", "parts"],
+      "properties": {
+        "format": { "const": "split-zip" },
+        "entryPart": { "type": "string", "pattern": "^[^/\\\\:]+[.]zip$" },
+        "expandedSizeBytes": { "type": "integer", "minimum": 1 },
+        "parts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "url", "size", "sha256"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[^/\\\\:]+$", "maxLength": 128 },
+              "url": { "type": "string", "format": "uri" },
+              "size": { "type": "integer", "minimum": 1 },
+              "sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "manifestVersion": 1,
+  "game": "TLBB Phong Vân Kiếm",
+  "clientVersion": "1.0.0",
+  "entryExecutable": "Launch.exe",
+  "registerUrl": null,
+  "archive": {
+    "format": "split-zip",
+    "entryPart": "TLBB.zip",
+    "expandedSizeBytes": 668326388,
+    "parts": [
+      {
+        "name": "TLBB.z01",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z01",
+        "size": 52428800,
+        "sha256": "fbb75b774a98b4fd6448a1219e95f192b79321766834328054337264931aee62"
+      },
+      {
+        "name": "TLBB.z02",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z02",
+        "size": 52428800,
+        "sha256": "b26b62928681798522f699ad799bc2efe63c6d4c6627e1c05580d26341739bde"
+      },
+      {
+        "name": "TLBB.z03",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z03",
+        "size": 52428800,
+        "sha256": "fba4e9db8647025b4cd6f17013677ed1a9a80bce7e2cdd5e6f4d6a40246c094b"
+      },
+      {
+        "name": "TLBB.z04",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z04",
+        "size": 52428800,
+        "sha256": "09a4c8d3943472f985190b180a8105c072ecbfa48e1c2b70101fc8eda6252e2a"
+      },
+      {
+        "name": "TLBB.z05",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z05",
+        "size": 52428800,
+        "sha256": "c3ad2e3b9e7246510b6768d9e4b907c7362ccf9ecafed32d162af4a7a9d417b6"
+      },
+      {
+        "name": "TLBB.z06",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z06",
+        "size": 52428800,
+        "sha256": "4e6ff6bd5293d76cc9dcb1b355bfa6084f9e0f160575a39cce146497da664845"
+      },
+      {
+        "name": "TLBB.z07",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.z07",
+        "size": 52428800,
+        "sha256": "3b7d55a218a707abf01cf53d43d86005d54eb4996c125f7b303bf8397a6907fa"
+      },
+      {
+        "name": "TLBB.zip",
+        "url": "https://github.com/echne/tlbb-setup-storage/releases/download/client-v1.0.0/TLBB.zip",
+        "size": 21190955,
+        "sha256": "2bdd867b8905378c3a6f68534ff4223c8d67c27bb00237ccc69e4b1fa3d6cb19"
+      }
+    ]
+  }
+}
