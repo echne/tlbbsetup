@@ -67,9 +67,22 @@ internal static class DefenderExclusionCommand
         if (returnValue is null) return 72;
 
         // WMI can accept the exclusion while its immediate readback returns a differently normalized path.
-        // The Add method's success code is authoritative; use readback only to confirm nonzero responses.
+        // The Add method's success code is authoritative. If it reports a nonzero result, allow WMI time
+        // to publish the updated preference before deciding that the exclusion was rejected.
         if (Convert.ToUInt32(returnValue) == 0) return 0;
-        return ReadExclusionPaths(defenderClass).Any(path => PathsEqual(path, folderPath)) ? 0 : 72;
+        return WaitForExclusionPath(defenderClass, folderPath) ? 0 : 72;
+    }
+
+    private static bool WaitForExclusionPath(ManagementClass defenderClass, string folderPath)
+    {
+        const int attempts = 20;
+        for (var attempt = 0; attempt < attempts; attempt++)
+        {
+            if (ReadExclusionPaths(defenderClass).Any(path => PathsEqual(path, folderPath))) return true;
+            if (attempt + 1 < attempts) Thread.Sleep(TimeSpan.FromMilliseconds(250));
+        }
+
+        return false;
     }
 
     private static IEnumerable<string> ReadExclusionPaths(ManagementClass defenderClass)
