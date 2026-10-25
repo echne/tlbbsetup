@@ -57,6 +57,8 @@ public sealed class WindowsDefenderExclusionService : IWindowsDefenderExclusionS
                 70 => throw new InvalidOperationException("Windows từ chối quyền thay đổi Defender. Hãy xác nhận UAC bằng tài khoản Administrator."),
                 71 => throw new InvalidOperationException("Không thể kết nối tới Microsoft Defender WMI. Defender có thể không hoạt động hoặc máy đang dùng antivirus khác."),
                 72 => throw new InvalidOperationException("Defender không nhận loại trừ này. Cấu hình có thể đang bị Group Policy, Intune hoặc Tamper Protection quản lý."),
+                73 => throw new InvalidOperationException("Defender đã nhận yêu cầu nhưng launcher chưa xác minh được đường dẫn sau 5 giây. Hãy kiểm tra Windows Security trước khi thử lại."),
+                >= 100 and <= 255 => throw new InvalidOperationException($"Defender trả mã WMI {(process.ExitCode - 100)} và launcher chưa xác minh được đường dẫn. Hãy kiểm tra Windows Security trước khi thử lại."),
                 _ => throw new InvalidOperationException($"Thành phần hỗ trợ Defender kết thúc với mã lỗi {process.ExitCode}.")
             };
         }
