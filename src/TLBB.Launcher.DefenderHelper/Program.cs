@@ -52,70 +52,32 @@ internal static class Program
 
     private static int AddFolderExclusion(string folderPath)
     {
-        uint returnCode;
-        {
-            var scope = new ManagementScope(NamespacePath);
-            scope.Connect();
-
-            using var defenderClass = new ManagementClass(scope, new ManagementPath(ClassName), new ObjectGetOptions());
-            if (ReadExclusionPaths(defenderClass).Any(path => PathsEqual(path, folderPath)))
-            {
-                return 1;
-            }
-
-            using var input = defenderClass.GetMethodParameters("Add");
-            input["ExclusionPath"] = new[] { folderPath };
-            input["ExclusionExtension"] = Array.Empty<string>();
-            input["ExclusionProcess"] = Array.Empty<string>();
-            input["ThreatIDDefaultAction_Ids"] = Array.Empty<long>();
-            input["ThreatIDDefaultAction_Actions"] = Array.Empty<byte>();
-            input["Force"] = true;
-
-            using var output = defenderClass.InvokeMethod("Add", input, null);
-            var returnValue = output?["ReturnValue"];
-            if (returnValue is null)
-            {
-                return 72;
-            }
-
-            returnCode = Convert.ToUInt32(returnValue);
-        }
-
-        // A successful WMI response is authoritative. When it reports a nonzero result, poll fresh WMI
-        // connections because the same ManagementClass instance can keep returning a stale preference list.
-        if (returnCode == 0)
-        {
-            return 0;
-        }
-
-        return WaitForExclusionPath(folderPath) ? 0 : EncodeWmiFailure(returnCode);
-    }
-
-    private static bool WaitForExclusionPath(string folderPath)
-    {
-        const int attempts = 20;
-        for (var attempt = 0; attempt < attempts; attempt++)
-        {
-            if (IsExclusionPresent(folderPath))
-            {
-                return true;
-            }
-
-            if (attempt + 1 < attempts)
-            {
-                Thread.Sleep(TimeSpan.FromMilliseconds(250));
-            }
-        }
-
-        return false;
-    }
-
-    private static bool IsExclusionPresent(string folderPath)
-    {
         var scope = new ManagementScope(NamespacePath);
         scope.Connect();
+
         using var defenderClass = new ManagementClass(scope, new ManagementPath(ClassName), new ObjectGetOptions());
-        return ReadExclusionPaths(defenderClass).Any(path => PathsEqual(path, folderPath));
+        if (ReadExclusionPaths(defenderClass).Any(path => PathsEqual(path, folderPath)))
+        {
+            return 1;
+        }
+
+        using var input = defenderClass.GetMethodParameters("Add");
+        input["ExclusionPath"] = new[] { folderPath };
+        input["ExclusionExtension"] = Array.Empty<string>();
+        input["ExclusionProcess"] = Array.Empty<string>();
+        input["ThreatIDDefaultAction_Ids"] = Array.Empty<long>();
+        input["ThreatIDDefaultAction_Actions"] = Array.Empty<byte>();
+        input["Force"] = true;
+
+        using var output = defenderClass.InvokeMethod("Add", input, null);
+        var returnValue = output?["ReturnValue"];
+        if (returnValue is null)
+        {
+            return 72;
+        }
+
+        var returnCode = Convert.ToUInt32(returnValue);
+        return returnCode == 0 ? 0 : EncodeWmiFailure(returnCode);
     }
 
     private static int EncodeWmiFailure(uint returnCode) => returnCode <= 155 ? 100 + (int)returnCode : 73;
